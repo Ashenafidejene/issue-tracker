@@ -1,21 +1,40 @@
-'use client ';
-import { TextField,TextArea, Button } from '@radix-ui/themes'
+'use client'
+
 import React from 'react'
-const newIssuePage = () => {
-  return (
-    <div className='max-w-xl space-y-3'>
-      {/* <TextField.Root>
-      <TextField.Input placeholder="TITLE" />
-      </TextField.Root>
-      <TextArea placeholder="Description" /> */}
-      <form className='block'>
-        <input type='email' placeholder='title' style={{border:'2px solid "black'}}/>
-        <textarea placeholder='Description '></textarea>
-      </form>
-      <Button>Submite new issue</Button>
-      
-    </div>
-  )
+import { Text, TextArea ,TextField, Button } from '@radix-ui/themes'
+
+import Link from 'next/link'
+import { useForm, Controller } from 'react-hook-form'
+
+interface IssueForm {
+    title: String,
+    description: String
 }
 
-export default newIssuePage
+function NewIssue() {
+
+    const { register, control } = useForm<IssueForm>();
+
+    /*
+    <Controller
+                    name='description'
+                    control={ }
+                />
+                <SimpleMdeReact placeholder='Description' {...register('description')} />
+    */
+
+    return (
+        <div className='pl-20 pt-20 text-lg'>
+            <h1 className='py-2'>New Issue</h1>
+            <div className='max-w-xl space-y-2'>
+                <TextField.Root>
+                    <TextField.Input placeholder='Title' {...register('title')} />
+                </TextField.Root>
+                 <TextArea placeholder='Write your issue description...' /> 
+                <Button className='!cursor-pointer duration-150 w-52 !h-8'>Submit</Button>
+            </div>
+        </div>
+    )
+}
+
+export default NewIssue
