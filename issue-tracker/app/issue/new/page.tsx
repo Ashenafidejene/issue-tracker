@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { TextField, Button,Callout} from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
@@ -16,27 +16,27 @@ interface IssueForm {
 }
 
 function NewIssue() {
-
+    const[error,setError]=useState('');
     const { register, control,handleSubmit } = useForm<IssueForm>();
 const router = useRouter();
     return (
-        <div className='pl-20 pt-20 text-lg'>
-            {/* {error &&(<Callout.Root>
-  <Callout.Text>error is happen 
-  </Callout.Text>
-</Callout.Root>)
+        <div className='max-w-xl pl-20 pt-20 text-lg'>
+            {error &&(<Callout.Root color='red'>
+            <Callout.Text>{error} 
+            </Callout.Text>
+            </Callout.Root>)
 
-            } */}
+            }
             <h1 className='py-2'>New Issue</h1>
             <form
-           className='max-w-xl space-y-2'
+           className=' space-y-2'
             onSubmit={handleSubmit(async (data) => {
                 try {
                     
                     await axios.post('/api/issues', data);
                     router.push('/issue');
                 } catch (error) {
-                    
+                    setError('an expected error');
                 }
   })}
 >
