@@ -1,13 +1,14 @@
 'use client'
 
 import React from 'react'
-import { Text, TextArea ,TextField, Button } from '@radix-ui/themes'
+import { TextField, Button,Callout} from '@radix-ui/themes'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useForm, Controller } from 'react-hook-form'
 import SimpleMDE from "react-simplemde-editor";
 import "easymde/dist/easymde.min.css";
 import axios from 'axios'
+import { error } from 'console'
 
 interface IssueForm {
     title: String,
@@ -20,12 +21,23 @@ function NewIssue() {
 const router = useRouter();
     return (
         <div className='pl-20 pt-20 text-lg'>
+            {/* {error &&(<Callout.Root>
+  <Callout.Text>error is happen 
+  </Callout.Text>
+</Callout.Root>)
+
+            } */}
             <h1 className='py-2'>New Issue</h1>
             <form
            className='max-w-xl space-y-2'
             onSubmit={handleSubmit(async (data) => {
-            await axios.post('/api/issues', data);
-               router.push('/issue');
+                try {
+                    
+                    await axios.post('/api/issues', data);
+                    router.push('/issue');
+                } catch (error) {
+                    
+                }
   })}
 >
                 <TextField.Root>
