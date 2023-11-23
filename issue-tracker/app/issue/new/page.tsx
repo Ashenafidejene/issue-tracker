@@ -10,6 +10,7 @@ import axios from 'axios'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { createIssueSchema } from '@/app/createIssueSchema'
 import {z} from 'zod';
+import ErrorMessage from '@/app/components/ErrorMessage'
 type issueForm = z.infer<typeof createIssueSchema>
 interface IssueForm {
     title: String,
@@ -46,15 +47,14 @@ const router = useRouter();
                 <TextField.Root>
                     <TextField.Input placeholder='Title' {...register('title')} />
                 </TextField.Root>
-                 {errors.title && <Text color='red' as='p'>{errors.title.message}</Text>}
+                  <ErrorMessage>{errors.title?.message}</ErrorMessage>
                  <Controller
                     name='description'
                     control={control}
                     render={(field)=><SimpleMDE placeholder='Description' {...field} />}
                 />
-                {errors.description && <Text as='p' color='red'>{errors.description.message}</Text>
+                <ErrorMessage >{errors.description?.message}</ErrorMessage>
 
-                }
                 <Button className='!cursor-pointer duration-150 w-52 !h-8'>Submit</Button>
             </form>
         </div>
