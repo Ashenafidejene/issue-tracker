@@ -11,6 +11,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { createIssueSchema } from '@/app/createIssueSchema'
 import {z} from 'zod';
 import ErrorMessage from '@/app/components/ErrorMessage'
+import Spinner from '@/app/components/Spinner'
+import Link from 'next/link'
 type issueForm = z.infer<typeof createIssueSchema>
 interface IssueForm {
     title: String,
@@ -22,6 +24,7 @@ function NewIssue() {
     const { register, control,handleSubmit ,formState:{errors}} = useForm<IssueForm>(
        { resolver:zodResolver(createIssueSchema)}
     );
+    const [ isSubmiting, setSubmiting]= useState(false)
 const router = useRouter();
     return (
         <div className='max-w-xl pl-20 pt-20 text-lg'>
@@ -36,10 +39,11 @@ const router = useRouter();
            className=' space-y-2'
             onSubmit={handleSubmit(async (data) => {
                 try {
-                    
+                    setSubmiting(true);
                     await axios.post('/api/issues', data);
                     router.push('/issue');
                 } catch (error) {
+                    setSubmiting(false);
                     setError('an expected error');
                 }
   })}
@@ -55,8 +59,8 @@ const router = useRouter();
                 />
                 <ErrorMessage >{errors.description?.message}</ErrorMessage>
 
-                <Button className='!cursor-pointer duration-150 w-52 !h-8'>Submit</Button>
-            </form>
+             <Link href='/issue'>  <Button disabled={isSubmiting} className='!cursor-pointer duration-150 w-52 !h-8'>Submit {isSubmiting && <Spinner/>}</Button></Link> 
+            </form> 
         </div>
     )
 }
